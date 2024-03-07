@@ -1,0 +1,31 @@
+# Ignore RStudio files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Ignore R environment files
+.Renviron
+.Rprofile
+
+# Ignore R package files
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tgz
+*.bz2
+*.bzip2
+*.xz
+
+# Ignore Jupyter Notebook checkpoint files
+.ipynb_checkpoints/
+
+# Ignore Python cache files
+__pycache__/
+
+# Ignore data and output files
+data/
+output/
+
+.DS_Store
+
