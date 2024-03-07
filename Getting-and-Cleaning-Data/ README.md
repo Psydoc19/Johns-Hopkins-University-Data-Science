@@ -1,4 +1,4 @@
-## **Project README**
+# **Project README**
 
 This repository contains scripts and data for the "Human Activity Recognition Using Smartphones" project. This README provides an overview of the project structure and instructions on how to use the scripts.
 
