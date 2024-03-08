@@ -1,0 +1,218 @@
+---
+title: "Storm Data Analysis"
+author: "Vitalii Diakonov"
+date: "2024-03-07"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document: default
+editor: visual
+---
+
+## Instructions
+
+Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.\
+This project involves exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage.
+
+The basic goal of this assignment is to explore the NOAA Storm Database and answer some basic questions about severe weather events. You must use the database to answer the questions below and show the code for your entire analysis. Your analysis can consist of tables, figures, or other summaries. You may use any R package you want to support your analysis.
+
+## Data
+
+The data for this assignment come in the form of a comma-separated-value file compressed via the bzip2 algorithm to reduce its size. The data for this assignment can be downloaded from [here](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2).
+
+The events in the database start in the year 1950 and end in November 2011. In the earlier years of the database there are generally fewer events recorded, most likely due to a lack of good records. More recent years should be considered more complete.
+
+The following analysis addresses two key questions:
+
+1.  Which types of events (as indicated in the ENVTYPE variable) pose the greatest threat to public health across the United States?
+
+2.  Which events have the most significant economic impact nationwide? This examination aims to provide insights into prioritizing resources for severe weather event preparedness without making specific recommendations.
+
+## Preprocessing
+
+### Loading and preprocessing the data
+
+Environment setup
+
+```{r read libraries, message=FALSE, warning=FALSE}
+# Load required libraries
+# Suppress messages and warnings
+library(dplyr)
+library(ggplot2)
+library(scales)
+```
+
+Read the data
+
+```{r}
+# Check if the file exists, if not, download it
+if (!file.exists('data2.csv.bz2')){
+  download.file('https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2',
+                destfile = paste0(getwd(), '/data2.csv.bz2'),
+                method = 'curl', quiet = TRUE)
+}
+
+# Read the downloaded file into a dataframe
+data <- read.csv('data2.csv.bz2', stringsAsFactors = FALSE)
+```
+
+Take a first look on data
+
+```{r}
+# Display the structure of the dataframe
+str(data)
+```
+
+The data frame contains 902,297 observations with 37 variables.
+
+Let's start by selecting the relevant columns from the dataset. Since I'm focusing on understanding the correlation between event types and their consequences on both public health and economic impacts nationwide, I'll choose only the essential columns for this analysis. These are **`EVTYPE`** for the event type, **`FATALITIES`** and **`INJURIES`** to gauge the impact on public health, and **`PROPDMG`**, **`PROPDMGEXP`** for property damage along with **`CROPDMG`**, **`CROPDMGEXP`** for crop damage. The magnitude of property and crop damages, represented by **`PROPDMGEXP`** and **`CROPDMGEXP`**, will help me convert the damage amounts into actual dollar values.
+
+```{r}
+# Select relevant columns from the dataset
+relevant_data <- data %>%
+  select(EVTYPE, FATALITIES, INJURIES, PROPDMG, PROPDMGEXP, CROPDMG, CROPDMGEXP)
+
+# Check the structure of the selected data to ensure correctness
+str(relevant_data)
+```
+
+Before proceeding with converting the damage estimates, it's a good idea to examine the unique values in the **`PROPDMGEXP`** and **`CROPDMGEXP`** columns to understand the variety of scales we're dealing with. This will help me tailor the conversion function accurately. Let's check the unique values in these exponent columns.
+
+```{r}
+# Unique values in PROPDMGEXP
+unique_propdmgexp <- unique(relevant_data$PROPDMGEXP)
+print(unique_propdmgexp)
+```
+
+```{r}
+# Unique values in CROPDMGEXP
+unique_cropdmgexp <- unique(relevant_data$CROPDMGEXP)
+print(unique_cropdmgexp)
+```
+
+First, I discovered the unique values in these exponent columns, which revealed a mixture of expected values (like "K" for thousands, "M" for millions, "B" for billions) and some unexpected or unclear values (like "","?","0", and various digits). Observing the unique values in **`CROPDMGEXP`**, we see a similar situation to **`PROPDMGEXP`** with a mix of expected values ("K", "M", "B" for thousands, millions, and billions, respectively), lowercase versions of these values ("k", "m"), and unclear or erroneous symbols ("","?","0", "2"). This confirms the need for a standardized approach to handle these variations effectively.
+
+Given this, I'll standardize the exponents and apply a conversion to actual dollar values.
+
+### **Conversion Function and Application**
+
+```{r}
+# Function to convert damage based on exponent, handling various cases
+convert_damage <- function(damage, exponent) {
+  # Standardize lowercase to uppercase and handle known units
+  exponent <- toupper(exponent)
+  multipliers <- setNames(c(1, 1E3, 1E6, 1E9), c("", "K", "M", "B"))
+  
+  # Assign no multiplier to digits and unclear symbols, or implement a custom logic
+  exponent[exponent %in% c("+", "?", "-", "0", "2", "k", "m")] <- ""
+  
+  # Default to 1 if exponent is not found in multipliers
+  multiplier <- ifelse(exponent %in% names(multipliers), multipliers[exponent], 1)
+  
+  # Calculate and return the actual damage in dollars
+  return(damage * multiplier)
+}
+
+# Apply the conversion to property and crop damage values
+relevant_data$PropDamageDollars <- mapply(convert_damage, relevant_data$PROPDMG, toupper(relevant_data$PROPDMGEXP))
+relevant_data$CropDamageDollars <- mapply(convert_damage, relevant_data$CROPDMG, toupper(relevant_data$CROPDMGEXP))
+
+# Removing the old damage columns as they are no longer necessary
+cleaned_data <- relevant_data %>%
+  select(EVTYPE, FATALITIES, INJURIES, PropDamageDollars, CropDamageDollars)
+
+# Quick check to see the final cleaned data
+head(cleaned_data)
+```
+
+## Data analysis
+
+### Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to population health?
+
+To find the types of events most harmful to population health, we'll analyze the **`FATALITIES`** and **`INJURIES`** columns from our cleaned dataset. By summing these values for each event type (**`EVTYPE`**), we can identify which events have had the most significant impact on public health in terms of both fatalities and injuries.
+
+The approach involves grouping the data by event type, then summarizing the total fatalities and injuries for each group. Finally, we'll sort these summaries to identify the top events causing harm to the population.
+
+```{r}
+# Group by event type and summarize total fatalities and injuries
+health_impacts <- cleaned_data %>%
+  group_by(EVTYPE) %>%
+  summarise(Total_Fatalities = sum(FATALITIES, na.rm = TRUE),
+            Total_Injuries = sum(INJURIES, na.rm = TRUE),
+            Total_Impacts = Total_Fatalities + Total_Injuries) %>%
+  arrange(desc(Total_Impacts))
+
+# Display the top events with respect to population health impact
+print(health_impacts)
+```
+
+Creating a visual representation of the impact of different weather events on public health will help illustrate the severity of these occurrences in a more digestible manner. I'll craft a bar plot using ggplot2 in R, showing the total impacts (sum of fatalities and injuries) of the top weather events. This will provide a clear, visual comparison of how each event type contributes to health-related consequences across the United States.
+
+```{r}
+# Plotting the top weather events affecting public health
+# Filter for the top 10 events to reduce clutter
+top_n_health_impacts <- head(health_impacts, 10)
+
+# Creating the plot with adjusted dimensions and text size
+ggplot(data = top_n_health_impacts, aes(x = reorder(EVTYPE, Total_Impacts), y = Total_Impacts, fill = EVTYPE)) +
+  geom_bar(stat = 'identity', fill = "steelblue") +
+  coord_flip() +  
+  xlab('Event Type') +  
+  ylab('Total Injuries and Fatalities') +  
+  ggtitle('Top Weather Events Causing Population Health Hazards') +  
+  theme_minimal() +  
+  scale_y_continuous(expand = expansion(mult = c(0.05, 0.1))) +
+  theme(axis.text.y = element_text(size = 8))  
+```
+
+### Across the United States, which types of events have the greatest economic consequences?
+
+To figure out which types of events have the most significant economic consequences in the United States, I'll analyze the economic impact using the **`PropDamageDollars`** and **`CropDamageDollars`** from our dataset. I\'ll sum up these figures for each type of event to see which ones hit the economy hardest.
+
+```{r}
+# Group by event type and summarize total property and crop damage
+economic_impacts <- cleaned_data %>%
+  group_by(EVTYPE) %>%
+  summarise(Total_Property_Damage = sum(PropDamageDollars, na.rm = TRUE),
+            Total_Crop_Damage = sum(CropDamageDollars, na.rm = TRUE),
+            Total_Economic_Impact = Total_Property_Damage + Total_Crop_Damage) %>%
+  arrange(desc(Total_Economic_Impact))
+
+# Display the events with the greatest economic impact
+print(economic_impacts)
+```
+
+Once I have this information, I can create a visualization to display these economic impacts clearly.
+
+```{r}
+# I want to display the top 10 for a clearer plot
+top_economic_impacts <- head(economic_impacts, 10)
+
+# Plotting the economic impacts
+ggplot(data = top_economic_impacts, aes(x = reorder(EVTYPE, Total_Economic_Impact), y = Total_Economic_Impact)) +
+  geom_bar(stat = 'identity', fill = "darkorange") +
+  coord_flip() +
+  xlab('Event Type') +
+  ylab('Total Economic Impact (USD)') +
+  ggtitle('Top Weather Events with the Greatest Economic Consequences') +
+  theme_minimal() +
+  scale_y_continuous(labels = scales::comma,   
+                     expand = expansion(mult = c(0.05, 0.1))) +
+  theme(axis.text.y = element_text(size = 8))
+```
+
+```{r}
+
+```
+
+## Results:
+
+Analyzing the NOAA storm data, it's clear that certain weather events pose significant threats both to population health and to the economy in the United States.
+
+From a health perspective, **tornadoes** have had the most substantial impact, with 5,633 fatalities and 91,346 injuries, summing up to a total of 96,979 health-related impacts. These events require urgent attention and resources to improve warning systems and build stronger structures to withstand their force. Excessive heat is another major concern, responsible for 1,903 fatalities and 6,525 injuries. This highlights the need for heatwave awareness and cooling shelters, especially for vulnerable populations. Thunderstorm winds, floods, and lightning also rank high in terms of public health impact, with their combined fatalities and injuries bringing to light the necessity for comprehensive weather preparedness plans.
+
+Economically, **floods** are the most devastating, causing around \$144.66 billion in property damage and an additional \$5.66 billion in crop damage, culminating in a staggering total of \$150.32 billion in economic impact. Hurricanes and typhoons follow with nearly \$69.31 billion in property damage and \$2.61 billion in crop damage, totaling around \$71.91 billion in impact. The massive economic toll of these events underscores the critical importance of investing in flood defenses and coastal protection measures.
+
+Tornadoes, though most harmful in terms of human health, have caused significant economic damage as well, approximately \$56.94 billion in property and \$415 million in crop damage, leading to a total impact of about \$57.35 billion. Storm surges and hail round out the list of top economic hazards, with storm surges causing around \$43.32 billion in property damage and hail resulting in about \$15.73 billion in property and \$3.03 billion in crop damage.
+
+These findings drive home the point that weather events are not just abstract figures on a news report; they're real and present threats with far-reaching consequences. As a data scientist, this analysis compels me to advocate for enhanced data-driven decision-making in urban planning, emergency response, infrastructure development, and community education to mitigate these impacts effectively. The patterns revealed by the data are a call to action, emphasizing the need to bolster our resilience against the inevitable challenges posed by severe weather.
