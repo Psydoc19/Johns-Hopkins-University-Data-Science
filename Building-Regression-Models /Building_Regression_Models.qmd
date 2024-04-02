@@ -1,0 +1,126 @@
+---
+title: "Building Regression Models"
+author: "Vitalii Diakonov"
+date: "4/01/2024"
+format: pdf
+editor: visual
+---
+
+## **Introduction:**
+
+As a data analyst at Motor Trend, I'm tasked with analyzing a dataset of car specifications to uncover insights into the factors affecting miles per gallon (MPG), a crucial metric in the automotive industry. My primary objective is to determine whether there's a noticeable difference in MPG between cars equipped with automatic and manual transmissions and quantify this difference.
+
+## **Data:**
+
+I'll be working with the mtcars dataset, which provides comprehensive information about various car models. My focus will primarily be on two key variables: MPG and transmission type (automatic or manual).
+
+```{r}
+# Load necessary libraries
+library(ggplot2)
+library(dplyr)
+
+# Load the mtcars dataset
+data("mtcars")
+
+# Select relevant variables for analysis (MPG and transmission)
+mpg_transmission <- mtcars %>% select(mpg, am) %>% mutate(am = as.factor(am))
+
+```
+
+## **Exploratory Data Analysis (EDA):**
+
+To kick off the analysis, I'll narrow down the dataset to just MPG and transmission variables for an initial exploratory dive. Through visualizations like box plots, I'll examine the distribution of MPG across different transmission types. My goal is to discern any notable differences, especially whether manual transmission cars tend to exhibit higher average MPG.
+
+```{r}
+mpg_transmission <- mtcars %>% 
+  select(mpg, am) %>% 
+  mutate(am = factor(am, levels = c(0, 1), labels = c("Automatic", "Manual")))
+ggplot(data = mpg_transmission, aes(x = am, y = mpg)) +
+  geom_boxplot() +
+  geom_point() +
+  xlab('Transmission') + 
+  ylab('Miles per Gallon') +
+  ggtitle('Relationship between Transmission and MPG')
+
+```
+
+Based on the box plot analysis, it appears that cars with manual transmission tend to have a higher mean miles per gallon (MPG) compared to those with automatic transmission.
+
+## **Model Fitting and Selection:**
+
+Moving forward, I'll embark on the process of fitting linear regression models to the MPG data, initially incorporating all available variables. However, to ensure model robustness, I'll meticulously assess diagnostic metrics, gradually eliminating non-significant variables until I achieve a final model with significant coefficients.
+
+```{r}
+# Fit multiple linear regression models
+fitAll <- lm(mpg ~ ., data = mtcars)
+summary(fitAll)
+
+# Refine the model by removing non-significant variables
+fitRaw <- mtcars %>% 
+  select(-cyl) %>%  # Remove 'cyl' variable
+  select(-disp) %>% # Remove 'disp' variable
+  select(-hp) %>%   # Remove 'hp' variable
+  select(-drat) %>% # Remove 'drat' variable
+  select(-vs) %>%   # Remove 'vs' variable
+  select(-gear) %>% # Remove 'gear' variable
+  select(-carb)     # Remove 'carb' variable
+
+fitRm <- lm(mpg ~ ., data = fitRaw)
+summary(fitRm)
+
+```
+
+1.  **Intercept (Intercept):**
+
+    -   The intercept of approximately 9.62 suggests that for a car with certain characteristics (such as weight, 1/4 mile time, etc., represented by other variables), the expected MPG is around 9.62 when the transmission type is automatic and all other variables are held constant.
+
+2.  **Weight (wt):**
+
+    -   The coefficient of -3.92 indicates that for every unit increase in weight (in 1000 lbs), the MPG decreases by approximately 3.92, holding other variables constant. This suggests that heavier cars tend to have lower MPG.
+
+3.  **1/4 Mile Time (qsec):**
+
+    -   The coefficient of 1.23 suggests that for every unit increase in the 1/4 mile time, the MPG increases by approximately 1.23, when other variables are held constant. This might seem counterintuitive but could be due to various factors such as engine efficiency at different speeds.
+
+4.  **Transmission Type (am):**
+
+    -   The coefficient of 2.94 indicates that cars with manual transmission tend to have approximately 2.94 higher MPG compared to cars with automatic transmission, holding other variables constant. This suggests that manual transmission might be better for MPG.
+
+**Statistical Significance:**
+
+-   The coefficients for weight (wt), 1/4 mile time (qsec), and transmission type (am) are statistically significant, as indicated by their p-values being less than 0.05.
+
+-   The overall model is statistically significant, with an extremely low p-value of 1.21e-11, suggesting that the model explains a significant amount of variance in the MPG.
+
+**Model Fit:**
+
+-   The multiple R-squared value of 0.85 indicates that approximately 85% of the variance in the MPG can be explained by the model.
+
+-   The adjusted R-squared value of 0.83 adjusts for the number of predictors in the model, providing a more accurate measure of model fit.
+
+## **Diagnostics:**
+
+To validate the integrity of the model, I'll subject it to a battery of diagnostic tests. Utilizing diagnostic plots like QQ plots and residuals vs. fitted plots, I'll evaluate adherence to model assumptions and detect any potential issues that may compromise model accuracy.
+
+```{r}
+# Conduct residual analysis and diagnostic tests
+par(mfrow = c(2, 2))
+plot(fitRm)
+
+```
+
+The QQ plot shows a pretty good correlation of the standardized and theoretical residuals. There also doesn\'t seem to be any significant patterns in the other three plots, indicating a good fit of the selected model.
+
+## **Conclusions:**
+
+Based on the analysis conducted using linear regression, we can address the questions posed by Motor Trend:
+
+1.  **"Is an automatic or manual transmission better for MPG?"**
+
+    -   The coefficient for transmission type (am) in the model is approximately 2.94 with a p-value of 0.047. This suggests that cars with manual transmission tend to have approximately 2.94 higher MPG compared to cars with automatic transmission, after controlling for other variables such as weight and 1/4 mile time. Therefore, based on this analysis, manual transmission appears to be better for MPG.
+
+2.  **"Quantify the MPG difference between automatic and manual transmissions"**
+
+    -   The coefficient for transmission type (am) quantifies the difference in MPG between automatic and manual transmissions. In this case, the coefficient of 2.94 indicates that, on average, cars with manual transmission achieve 2.94 more miles per gallon compared to cars with automatic transmission, all else being equal.
+
+These findings provide insights into the relationship between transmission type and MPG, suggesting that manual transmission may offer better fuel efficiency than automatic transmission. However, it's essential to consider other factors and conduct further analysis to validate these conclusions.
