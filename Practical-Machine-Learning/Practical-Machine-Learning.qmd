@@ -1,0 +1,266 @@
+---
+title: "Practical Machine Learning"
+author: "Vitalii Diakonov"
+date: "4/02/2024"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+editor: visual
+---
+
+## 
+
+## **Background**
+
+Using devices such as *Jawbone Up*, *Nike FuelBand*, and *Fitbit* it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement -- a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how *much* of a particular activity they do, but they rarely quantify *how well they do it*. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website [here](http://groupware.les.inf.puc-rio.br/har) (see the section on the Weight Lifting Exercise Dataset).
+
+## The Goal
+
+The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+One thing that people regularly do is quantify how *much* of a particular activity they do, but they rarely quantify *how well they do it*. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants.
+
+## **Data**
+
+The training data for this project are available [here](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv).
+
+The test data are available [here](https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv).
+
+The data for this project come from this [source](http://groupware.les.inf.puc-rio.br/har). If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.
+
+## Analysis
+
+### **Load Necessary Libraries**
+
+Load the required libraries for data manipulation, visualization, and machine learning.
+
+```{r}
+# Load Necessary Libraries
+library(caret)      # For modeling and cross-validation
+library(randomForest)  # For machine learning
+```
+
+### **Load and Explore Data**
+
+Load the training and test datasets.
+
+```{r}
+# Download and read training data
+if (!file.exists('train.csv')) {
+  download.file(url = 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv', 
+                destfile = 'train.csv', method = 'curl', quiet = TRUE) 
+}
+train_data <- read.csv('train.csv')
+
+# Download and read test data
+if (!file.exists('test.csv')) {
+  download.file(url = 'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv', 
+                destfile = 'test.csv', method = 'curl', quiet = TRUE)
+}
+test_data <- read.csv('test.csv')
+```
+
+Explore the structure of the data.
+
+```{r}
+# Explore data structure
+str(train_data)
+```
+
+### **Preprocessing**
+
+To prepare the data for analysis, I first inspected each column and identified the ones that are unrelated to exercise. These include the column numbers (**`X`**), timestamps (**`raw_timestamp_part_1`**, **`raw_timestamp_part_2`**, **`cvtd_timestamp`**), and information about windowing (**`new_window, num_window`** ). To remove these columns, I selected only the relevant ones:
+
+```{r}
+exercise_data <- train_data[, -c(1, 3:6)]
+```
+
+Now, the **`exercise_data`** dataframe contains only the exercise-related variables, excluding the column numbers, timestamps, and windowing information.
+
+Convert 'classe' variable to factor:
+
+```{r}
+# Convert 'classe' variable to factor in exercise_data
+exercise_data$classe <- factor(exercise_data$classe)
+
+# Check levels of the 'classe' variable in exercise_data
+print(levels(exercise_data$classe))
+```
+
+Spliting the data into 70% training and 30% testing set:
+
+```{r}
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create an index for splitting the data
+train_index <- createDataPartition(exercise_data$classe, p = 0.7, list = FALSE)
+
+# Use the index to split the data into the training and testing sets
+training_set <- exercise_data[train_index, ]
+testing_set <- exercise_data[-train_index, ]
+```
+
+I'm also removing near-zero variance (NZV) variables from the dataset. Near-zero variance variables are those that show very little variation or almost no changes in their values across the observations. These variables can often be uninformative or redundant for modeling purposes, as they don't provide much discriminatory power. By removing these near-zero variance variables, I aim to streamline the dataset and improve the effectiveness of the subsequent modeling process:
+
+```{r}
+# Identify near-zero variance variables
+nzv <- nearZeroVar(training_set, saveMetrics = TRUE)
+
+# Keep only variables with non-zero variance
+keepFeat <- row.names(nzv[nzv$nzv == FALSE, ])
+
+# Subset the training set to keep only the selected features
+training_set_filtered <- training_set[, keepFeat]
+
+```
+
+Removing variables with NAs:
+
+```{r}
+training <- training_set_filtered[, colSums(is.na(training_set_filtered)) == 0]
+dim(training)
+
+```
+
+### **Model training**
+
+Set up 5-fold cross validation for training:
+
+```{r}
+# Define the control parameters for cross-validation
+ctrl <- trainControl(method = "cv",    # Cross-validation method
+                     number = 5,       # Number of folds
+                     verboseIter = TRUE)  # Print progress during training
+```
+
+**Fit a model with random forests:**
+
+```{r}
+# Set seed for reproducibility
+set.seed(12345)
+
+# Fit a random forest model
+model_rf <- train(classe ~ . , 
+               data = training, 
+               method = 'rf', 
+               trControl = ctrl)
+
+# View the trained model
+model_rf
+```
+
+The model was trained on a dataset consisting of 13,737 samples and 54 predictors, with 5 classes labeled 'A', 'B', 'C', 'D', and 'E'.
+
+During the training process, the tuning parameter 'mtry' was varied across three different values: 2, 30, and 58. For each value of 'mtry', the model's accuracy and Kappa coefficient were calculated.
+
+Ultimately, the model with 'mtry = 30' was selected as the optimal model. This model achieved an accuracy of approximately 99.71% and a Kappa coefficient of approximately 0.9963.
+
+The **`finalModel`** component of the trained model object contains the final random forest model that was selected after tuning and cross-validation:
+
+```{r}
+model_rf$finalModel
+```
+
+The random forest model summary shows that it was trained with 500 trees, and at each split, 30 variables were considered. The out-of-bag (OOB) estimate of the error rate is remarkably low, at only 0.22%.
+
+The confusion matrix displays the classification results. Each row represents the true class, while each column represents the predicted class. The diagonal elements (from top-left to bottom-right) show the correctly classified instances for each class, while the off-diagonal elements represent misclassifications. The **`class.error`** column provides the error rate for each class.
+
+Overall, the model seems to perform very well, with very low error rates for each class.
+
+This model will be used for further predictions.
+
+Predict with the validation set and check the confusion matrix and accuracy:
+
+```{r}
+predictions_rf <- predict(model_rf, newdata = testing_set)
+
+# Calculate the confusion matrix
+confusion_matrix <- confusionMatrix(predictions_rf, testing_set$classe)$table
+confusion_matrix
+
+```
+
+This confusion matrix shows the comparison between the predicted classes (A, B, C, D, E) and the actual classes in the testing set. Each cell represents the number of instances where the predicted class aligns with the actual class. For example, there are 1674 instances where class A was correctly predicted as class A. Similarly, there are 1135 instances where class B was correctly predicted as class B.
+
+```{r}
+# Calculating the accuracy of the model
+accuracy_rf <- sum(diag(confusion_matrix)) / sum(confusion_matrix)
+accuracy_rf
+```
+
+The accuracy of the model is approximately 99.83%. That's quite impressive!
+
+**Fit a model with gradient boosting method**
+
+```{r}
+# Fit a model with gradient boosting
+model_gb <- train(classe ~ . , 
+                  data = training, 
+                  method = 'gbm', 
+                  trControl = ctrl)
+
+# View the trained model
+model_gb
+```
+
+Based on the summary, the optimal model was selected based on the highest accuracy, which was achieved with 150 trees and an interaction depth of 3. The shrinkage parameter was set to 0.1, and n.minobsinnode was held constant at a value of 10.
+
+This information helps us understand how different hyperparameters affect the model's performance and guides us in selecting the best model configuration.
+
+Predict with the validation set and check the confusion matrix and accuracy:
+
+```{r}
+# Predict with the validation set
+predictions_gb <- predict(model_gb, newdata = testing_set)
+
+# Create the confusion matrix
+conf_matrix_gb <- confusionMatrix(predictions_gb, testing_set$classe)$table
+conf_matrix_gb
+```
+
+-   For class A, there are 1667 correct predictions, 8 predictions of class B, 2 predictions of class D, and 2 predictions of class E.
+
+-   For class B, there are 1117 correct predictions, 5 predictions of class A, 7 predictions of class C, and 5 predictions of class D.
+
+-   For class C, there are 1017 correct predictions, 13 predictions of class B, 7 predictions of class D, and 7 predictions of class E.
+
+-   For class D, there are 948 correct predictions, 1 prediction of class B, 2 predictions of class C, and 10 predictions of class E.
+
+-   For class E, there are 1063 correct predictions, 2 predictions of class A, and 2 predictions of class D.
+
+```{r}
+# Calculate accuracy
+accuracy_gb <- sum(diag(conf_matrix_gb)) / sum(conf_matrix_gb)
+accuracy_gb
+```
+
+The accuracy for the gradient boosting model is approximately 98.76%. This means that the model correctly predicts the exercise classes for about 98.76% of the validation set.
+
+## Quiz answers
+
+\
+Given that the Random Forest model achieved an accuracy of 99.83% compared to 98.76% for GBM, I will use the Random Forest model for prediction:
+
+```{r}
+# Make predictions using the Random Forest model
+predictions_rf <- predict(model_rf, newdata = test_data)
+
+# View the predictions
+predictions_rf
+```
+
+The gbm model can also be used for prediction and the results can be compared to above:
+
+```{r}
+# Make predictions using the GBM model
+predictions_gbm <- predict(model_gb, newdata = test_data)
+
+# View the predictions
+predictions_gbm
+```
+
+## Conclusion
+
+In conclusion, both the Random Forest and Gradient Boosting Machine models demonstrate comparable performance in terms of accuracy. This suggests that either model could be effectively utilized for making predictions in this context.

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vitalii Diakonov">
+<meta name="dcterms.date" content="2024-04-02">
+
+<title>Practical Machine Learning</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Practical-Machine-Learning_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Practical-Machine-Learning_files/libs/quarto-html/quarto.js"></script>
+<script src="Practical-Machine-Learning_files/libs/quarto-html/popper.min.js"></script>
+<script src="Practical-Machine-Learning_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Practical-Machine-Learning_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Practical-Machine-Learning_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Practical-Machine-Learning_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Practical-Machine-Learning_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Practical-Machine-Learning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Practical-Machine-Learning_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Practical Machine Learning</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vitalii Diakonov </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 2, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="background" class="level2">
+<h2 class="anchored" data-anchor-id="background"><strong>Background</strong></h2>
+<p>Using devices such as <em>Jawbone Up</em>, <em>Nike FuelBand</em>, and <em>Fitbit</em> it is now possible to collect a large amount of data about personal activity relatively inexpensively. These type of devices are part of the quantified self movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. One thing that people regularly do is quantify how <em>much</em> of a particular activity they do, but they rarely quantify <em>how well they do it</em>. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants. They were asked to perform barbell lifts correctly and incorrectly in 5 different ways. More information is available from the website <a href="http://groupware.les.inf.puc-rio.br/har">here</a> (see the section on the Weight Lifting Exercise Dataset).</p>
+</section>
+<section id="the-goal" class="level2">
+<h2 class="anchored" data-anchor-id="the-goal">The Goal</h2>
+<p>The goal of your project is to predict the manner in which they did the exercise. This is the “classe” variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.</p>
+<p>One thing that people regularly do is quantify how <em>much</em> of a particular activity they do, but they rarely quantify <em>how well they do it</em>. In this project, your goal will be to use data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data"><strong>Data</strong></h2>
+<p>The training data for this project are available <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv">here</a>.</p>
+<p>The test data are available <a href="https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv">here</a>.</p>
+<p>The data for this project come from this <a href="http://groupware.les.inf.puc-rio.br/har">source</a>. If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.</p>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">Analysis</h2>
+<section id="load-necessary-libraries" class="level3">
+<h3 class="anchored" data-anchor-id="load-necessary-libraries"><strong>Load Necessary Libraries</strong></h3>
+<p>Load the required libraries for data manipulation, visualization, and machine learning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Necessary Libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)      <span class="co"># For modeling and cross-validation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)  <span class="co"># For machine learning</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>randomForest 4.7-1.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Type rfNews() to see new features/changes/bug fixes.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'randomForest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    margin</code></pre>
+</div>
+</div>
+</section>
+<section id="load-and-explore-data" class="level3">
+<h3 class="anchored" data-anchor-id="load-and-explore-data"><strong>Load and Explore Data</strong></h3>
+<p>Load the training and test datasets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download and read training data</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">'train.csv'</span>)) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv'</span>, </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">destfile =</span> <span class="st">'train.csv'</span>, <span class="at">method =</span> <span class="st">'curl'</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'train.csv'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Download and read test data</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">'test.csv'</span>)) {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">download.file</span>(<span class="at">url =</span> <span class="st">'https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv'</span>, </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">destfile =</span> <span class="st">'test.csv'</span>, <span class="at">method =</span> <span class="st">'curl'</span>, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'test.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explore the structure of the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Explore data structure</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   19622 obs. of  160 variables:
+ $ X                       : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ user_name               : chr  "carlitos" "carlitos" "carlitos" "carlitos" ...
+ $ raw_timestamp_part_1    : int  1323084231 1323084231 1323084231 1323084232 1323084232 1323084232 1323084232 1323084232 1323084232 1323084232 ...
+ $ raw_timestamp_part_2    : int  788290 808298 820366 120339 196328 304277 368296 440390 484323 484434 ...
+ $ cvtd_timestamp          : chr  "05/12/2011 11:23" "05/12/2011 11:23" "05/12/2011 11:23" "05/12/2011 11:23" ...
+ $ new_window              : chr  "no" "no" "no" "no" ...
+ $ num_window              : int  11 11 11 12 12 12 12 12 12 12 ...
+ $ roll_belt               : num  1.41 1.41 1.42 1.48 1.48 1.45 1.42 1.42 1.43 1.45 ...
+ $ pitch_belt              : num  8.07 8.07 8.07 8.05 8.07 8.06 8.09 8.13 8.16 8.17 ...
+ $ yaw_belt                : num  -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 -94.4 ...
+ $ total_accel_belt        : int  3 3 3 3 3 3 3 3 3 3 ...
+ $ kurtosis_roll_belt      : chr  "" "" "" "" ...
+ $ kurtosis_picth_belt     : chr  "" "" "" "" ...
+ $ kurtosis_yaw_belt       : chr  "" "" "" "" ...
+ $ skewness_roll_belt      : chr  "" "" "" "" ...
+ $ skewness_roll_belt.1    : chr  "" "" "" "" ...
+ $ skewness_yaw_belt       : chr  "" "" "" "" ...
+ $ max_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_picth_belt          : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_yaw_belt            : chr  "" "" "" "" ...
+ $ min_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_pitch_belt          : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_yaw_belt            : chr  "" "" "" "" ...
+ $ amplitude_roll_belt     : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ amplitude_pitch_belt    : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ amplitude_yaw_belt      : chr  "" "" "" "" ...
+ $ var_total_accel_belt    : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_roll_belt        : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_roll_belt           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_pitch_belt          : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_pitch_belt       : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_pitch_belt          : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_yaw_belt            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_yaw_belt         : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_yaw_belt            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ gyros_belt_x            : num  0 0.02 0 0.02 0.02 0.02 0.02 0.02 0.02 0.03 ...
+ $ gyros_belt_y            : num  0 0 0 0 0.02 0 0 0 0 0 ...
+ $ gyros_belt_z            : num  -0.02 -0.02 -0.02 -0.03 -0.02 -0.02 -0.02 -0.02 -0.02 0 ...
+ $ accel_belt_x            : int  -21 -22 -20 -22 -21 -21 -22 -22 -20 -21 ...
+ $ accel_belt_y            : int  4 4 5 3 2 4 3 4 2 4 ...
+ $ accel_belt_z            : int  22 22 23 21 24 21 21 21 24 22 ...
+ $ magnet_belt_x           : int  -3 -7 -2 -6 -6 0 -4 -2 1 -3 ...
+ $ magnet_belt_y           : int  599 608 600 604 600 603 599 603 602 609 ...
+ $ magnet_belt_z           : int  -313 -311 -305 -310 -302 -312 -311 -313 -312 -308 ...
+ $ roll_arm                : num  -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 ...
+ $ pitch_arm               : num  22.5 22.5 22.5 22.1 22.1 22 21.9 21.8 21.7 21.6 ...
+ $ yaw_arm                 : num  -161 -161 -161 -161 -161 -161 -161 -161 -161 -161 ...
+ $ total_accel_arm         : int  34 34 34 34 34 34 34 34 34 34 ...
+ $ var_accel_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_roll_arm         : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_pitch_arm        : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ avg_yaw_arm             : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ stddev_yaw_arm          : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ var_yaw_arm             : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ gyros_arm_x             : num  0 0.02 0.02 0.02 0 0.02 0 0.02 0.02 0.02 ...
+ $ gyros_arm_y             : num  0 -0.02 -0.02 -0.03 -0.03 -0.03 -0.03 -0.02 -0.03 -0.03 ...
+ $ gyros_arm_z             : num  -0.02 -0.02 -0.02 0.02 0 0 0 0 -0.02 -0.02 ...
+ $ accel_arm_x             : int  -288 -290 -289 -289 -289 -289 -289 -289 -288 -288 ...
+ $ accel_arm_y             : int  109 110 110 111 111 111 111 111 109 110 ...
+ $ accel_arm_z             : int  -123 -125 -126 -123 -123 -122 -125 -124 -122 -124 ...
+ $ magnet_arm_x            : int  -368 -369 -368 -372 -374 -369 -373 -372 -369 -376 ...
+ $ magnet_arm_y            : int  337 337 344 344 337 342 336 338 341 334 ...
+ $ magnet_arm_z            : int  516 513 513 512 506 513 509 510 518 516 ...
+ $ kurtosis_roll_arm       : chr  "" "" "" "" ...
+ $ kurtosis_picth_arm      : chr  "" "" "" "" ...
+ $ kurtosis_yaw_arm        : chr  "" "" "" "" ...
+ $ skewness_roll_arm       : chr  "" "" "" "" ...
+ $ skewness_pitch_arm      : chr  "" "" "" "" ...
+ $ skewness_yaw_arm        : chr  "" "" "" "" ...
+ $ max_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_picth_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_yaw_arm             : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_roll_arm            : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_pitch_arm           : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_yaw_arm             : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ amplitude_roll_arm      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ amplitude_pitch_arm     : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ amplitude_yaw_arm       : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ roll_dumbbell           : num  13.1 13.1 12.9 13.4 13.4 ...
+ $ pitch_dumbbell          : num  -70.5 -70.6 -70.3 -70.4 -70.4 ...
+ $ yaw_dumbbell            : num  -84.9 -84.7 -85.1 -84.9 -84.9 ...
+ $ kurtosis_roll_dumbbell  : chr  "" "" "" "" ...
+ $ kurtosis_picth_dumbbell : chr  "" "" "" "" ...
+ $ kurtosis_yaw_dumbbell   : chr  "" "" "" "" ...
+ $ skewness_roll_dumbbell  : chr  "" "" "" "" ...
+ $ skewness_pitch_dumbbell : chr  "" "" "" "" ...
+ $ skewness_yaw_dumbbell   : chr  "" "" "" "" ...
+ $ max_roll_dumbbell       : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_picth_dumbbell      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ max_yaw_dumbbell        : chr  "" "" "" "" ...
+ $ min_roll_dumbbell       : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_pitch_dumbbell      : num  NA NA NA NA NA NA NA NA NA NA ...
+ $ min_yaw_dumbbell        : chr  "" "" "" "" ...
+ $ amplitude_roll_dumbbell : num  NA NA NA NA NA NA NA NA NA NA ...
+  [list output truncated]</code></pre>
+</div>
+</div>
+</section>
+<section id="preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing"><strong>Preprocessing</strong></h3>
+<p>To prepare the data for analysis, I first inspected each column and identified the ones that are unrelated to exercise. These include the column numbers (<strong><code>X</code></strong>), timestamps (<strong><code>raw_timestamp_part_1</code></strong>, <strong><code>raw_timestamp_part_2</code></strong>, <strong><code>cvtd_timestamp</code></strong>), and information about windowing (<strong><code>new_window, num_window</code></strong> ). To remove these columns, I selected only the relevant ones:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>exercise_data <span class="ot">&lt;-</span> train_data[, <span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, the <strong><code>exercise_data</code></strong> dataframe contains only the exercise-related variables, excluding the column numbers, timestamps, and windowing information.</p>
+<p>Convert ‘classe’ variable to factor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert 'classe' variable to factor in exercise_data</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>exercise_data<span class="sc">$</span>classe <span class="ot">&lt;-</span> <span class="fu">factor</span>(exercise_data<span class="sc">$</span>classe)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check levels of the 'classe' variable in exercise_data</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">levels</span>(exercise_data<span class="sc">$</span>classe))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "A" "B" "C" "D" "E"</code></pre>
+</div>
+</div>
+<p>Spliting the data into 70% training and 30% testing set:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set the seed for reproducibility</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an index for splitting the data</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(exercise_data<span class="sc">$</span>classe, <span class="at">p =</span> <span class="fl">0.7</span>, <span class="at">list =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the index to split the data into the training and testing sets</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>training_set <span class="ot">&lt;-</span> exercise_data[train_index, ]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>testing_set <span class="ot">&lt;-</span> exercise_data[<span class="sc">-</span>train_index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I’m also removing near-zero variance (NZV) variables from the dataset. Near-zero variance variables are those that show very little variation or almost no changes in their values across the observations. These variables can often be uninformative or redundant for modeling purposes, as they don’t provide much discriminatory power. By removing these near-zero variance variables, I aim to streamline the dataset and improve the effectiveness of the subsequent modeling process:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify near-zero variance variables</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>nzv <span class="ot">&lt;-</span> <span class="fu">nearZeroVar</span>(training_set, <span class="at">saveMetrics =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only variables with non-zero variance</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>keepFeat <span class="ot">&lt;-</span> <span class="fu">row.names</span>(nzv[nzv<span class="sc">$</span>nzv <span class="sc">==</span> <span class="cn">FALSE</span>, ])</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the training set to keep only the selected features</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>training_set_filtered <span class="ot">&lt;-</span> training_set[, keepFeat]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Removing variables with NAs:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>training <span class="ot">&lt;-</span> training_set_filtered[, <span class="fu">colSums</span>(<span class="fu">is.na</span>(training_set_filtered)) <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(training)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13737    55</code></pre>
+</div>
+</div>
+</section>
+<section id="model-training" class="level3">
+<h3 class="anchored" data-anchor-id="model-training"><strong>Model training</strong></h3>
+<p>Set up 5-fold cross validation for training:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the control parameters for cross-validation</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>,    <span class="co"># Cross-validation method</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">number =</span> <span class="dv">5</span>,       <span class="co"># Number of folds</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">verboseIter =</span> <span class="cn">TRUE</span>)  <span class="co"># Print progress during training</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Fit a model with random forests:</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12345</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a random forest model</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>model_rf <span class="ot">&lt;-</span> <span class="fu">train</span>(classe <span class="sc">~</span> . , </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> training, </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">'rf'</span>, </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">trControl =</span> ctrl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+ Fold1: mtry= 2 
+- Fold1: mtry= 2 
++ Fold1: mtry=30 
+- Fold1: mtry=30 
++ Fold1: mtry=58 
+- Fold1: mtry=58 
++ Fold2: mtry= 2 
+- Fold2: mtry= 2 
++ Fold2: mtry=30 
+- Fold2: mtry=30 
++ Fold2: mtry=58 
+- Fold2: mtry=58 
++ Fold3: mtry= 2 
+- Fold3: mtry= 2 
++ Fold3: mtry=30 
+- Fold3: mtry=30 
++ Fold3: mtry=58 
+- Fold3: mtry=58 
++ Fold4: mtry= 2 
+- Fold4: mtry= 2 
++ Fold4: mtry=30 
+- Fold4: mtry=30 
++ Fold4: mtry=58 
+- Fold4: mtry=58 
++ Fold5: mtry= 2 
+- Fold5: mtry= 2 
++ Fold5: mtry=30 
+- Fold5: mtry=30 
++ Fold5: mtry=58 
+- Fold5: mtry=58 
+Aggregating results
+Selecting tuning parameters
+Fitting mtry = 30 on full training set</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the trained model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>model_rf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Random Forest 
+
+13737 samples
+   54 predictor
+    5 classes: 'A', 'B', 'C', 'D', 'E' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 10990, 10990, 10989, 10991, 10988 
+Resampling results across tuning parameters:
+
+  mtry  Accuracy   Kappa    
+   2    0.9927206  0.9907918
+  30    0.9970883  0.9963171
+  58    0.9949042  0.9935545
+
+Accuracy was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 30.</code></pre>
+</div>
+</div>
+<p>The model was trained on a dataset consisting of 13,737 samples and 54 predictors, with 5 classes labeled ‘A’, ‘B’, ‘C’, ‘D’, and ‘E’.</p>
+<p>During the training process, the tuning parameter ‘mtry’ was varied across three different values: 2, 30, and 58. For each value of ‘mtry’, the model’s accuracy and Kappa coefficient were calculated.</p>
+<p>Ultimately, the model with ‘mtry = 30’ was selected as the optimal model. This model achieved an accuracy of approximately 99.71% and a Kappa coefficient of approximately 0.9963.</p>
+<p>The <strong><code>finalModel</code></strong> component of the trained model object contains the final random forest model that was selected after tuning and cross-validation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_rf<span class="sc">$</span>finalModel</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+ randomForest(x = x, y = y, mtry = param$mtry) 
+               Type of random forest: classification
+                     Number of trees: 500
+No. of variables tried at each split: 30
+
+        OOB estimate of  error rate: 0.22%
+Confusion matrix:
+     A    B    C    D    E  class.error
+A 3904    1    0    0    1 0.0005120328
+B    6 2649    3    0    0 0.0033860045
+C    0    5 2389    2    0 0.0029215359
+D    0    0    7 2245    0 0.0031083481
+E    0    0    0    5 2520 0.0019801980</code></pre>
+</div>
+</div>
+<p>The random forest model summary shows that it was trained with 500 trees, and at each split, 30 variables were considered. The out-of-bag (OOB) estimate of the error rate is remarkably low, at only 0.22%.</p>
+<p>The confusion matrix displays the classification results. Each row represents the true class, while each column represents the predicted class. The diagonal elements (from top-left to bottom-right) show the correctly classified instances for each class, while the off-diagonal elements represent misclassifications. The <strong><code>class.error</code></strong> column provides the error rate for each class.</p>
+<p>Overall, the model seems to perform very well, with very low error rates for each class.</p>
+<p>This model will be used for further predictions.</p>
+<p>Predict with the validation set and check the confusion matrix and accuracy:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>predictions_rf <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_rf, <span class="at">newdata =</span> testing_set)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the confusion matrix</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>confusion_matrix <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(predictions_rf, testing_set<span class="sc">$</span>classe)<span class="sc">$</span>table</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>confusion_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Reference
+Prediction    A    B    C    D    E
+         A 1674    1    0    0    0
+         B    0 1135    1    0    0
+         C    0    3 1025    1    0
+         D    0    0    0  963    4
+         E    0    0    0    0 1078</code></pre>
+</div>
+</div>
+<p>This confusion matrix shows the comparison between the predicted classes (A, B, C, D, E) and the actual classes in the testing set. Each cell represents the number of instances where the predicted class aligns with the actual class. For example, there are 1674 instances where class A was correctly predicted as class A. Similarly, there are 1135 instances where class B was correctly predicted as class B.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating the accuracy of the model</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>accuracy_rf <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(confusion_matrix)) <span class="sc">/</span> <span class="fu">sum</span>(confusion_matrix)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>accuracy_rf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9983008</code></pre>
+</div>
+</div>
+<p>The accuracy of the model is approximately 99.83%. That’s quite impressive!</p>
+<p><strong>Fit a model with gradient boosting method</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a model with gradient boosting</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>model_gb <span class="ot">&lt;-</span> <span class="fu">train</span>(classe <span class="sc">~</span> . , </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> training, </span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">method =</span> <span class="st">'gbm'</span>, </span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">trControl =</span> ctrl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>+ Fold1: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1317
+     2        1.5219             nan     0.1000    0.0889
+     3        1.4634             nan     0.1000    0.0682
+     4        1.4181             nan     0.1000    0.0517
+     5        1.3826             nan     0.1000    0.0441
+     6        1.3535             nan     0.1000    0.0481
+     7        1.3236             nan     0.1000    0.0385
+     8        1.2988             nan     0.1000    0.0326
+     9        1.2772             nan     0.1000    0.0357
+    10        1.2523             nan     0.1000    0.0317
+    20        1.0861             nan     0.1000    0.0171
+    40        0.9042             nan     0.1000    0.0092
+    60        0.7944             nan     0.1000    0.0066
+    80        0.7137             nan     0.1000    0.0042
+   100        0.6477             nan     0.1000    0.0042
+   120        0.5924             nan     0.1000    0.0030
+   140        0.5465             nan     0.1000    0.0020
+   150        0.5264             nan     0.1000    0.0025
+
+- Fold1: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
++ Fold1: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1924
+     2        1.4826             nan     0.1000    0.1282
+     3        1.3978             nan     0.1000    0.1075
+     4        1.3296             nan     0.1000    0.0909
+     5        1.2723             nan     0.1000    0.0697
+     6        1.2261             nan     0.1000    0.0712
+     7        1.1813             nan     0.1000    0.0602
+     8        1.1431             nan     0.1000    0.0573
+     9        1.1071             nan     0.1000    0.0451
+    10        1.0790             nan     0.1000    0.0560
+    20        0.8493             nan     0.1000    0.0218
+    40        0.6174             nan     0.1000    0.0086
+    60        0.4866             nan     0.1000    0.0071
+    80        0.3957             nan     0.1000    0.0050
+   100        0.3323             nan     0.1000    0.0030
+   120        0.2828             nan     0.1000    0.0025
+   140        0.2407             nan     0.1000    0.0021
+   150        0.2220             nan     0.1000    0.0018
+
+- Fold1: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
++ Fold1: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2384
+     2        1.4544             nan     0.1000    0.1559
+     3        1.3542             nan     0.1000    0.1324
+     4        1.2688             nan     0.1000    0.1146
+     5        1.1978             nan     0.1000    0.0912
+     6        1.1396             nan     0.1000    0.0817
+     7        1.0883             nan     0.1000    0.0682
+     8        1.0447             nan     0.1000    0.0601
+     9        1.0060             nan     0.1000    0.0636
+    10        0.9658             nan     0.1000    0.0487
+    20        0.7071             nan     0.1000    0.0246
+    40        0.4538             nan     0.1000    0.0119
+    60        0.3273             nan     0.1000    0.0047
+    80        0.2468             nan     0.1000    0.0037
+   100        0.1934             nan     0.1000    0.0020
+   120        0.1535             nan     0.1000    0.0017
+   140        0.1259             nan     0.1000    0.0025
+   150        0.1142             nan     0.1000    0.0009
+
+- Fold1: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
++ Fold2: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1267
+     2        1.5241             nan     0.1000    0.0880
+     3        1.4665             nan     0.1000    0.0659
+     4        1.4227             nan     0.1000    0.0551
+     5        1.3869             nan     0.1000    0.0430
+     6        1.3575             nan     0.1000    0.0450
+     7        1.3282             nan     0.1000    0.0400
+     8        1.3028             nan     0.1000    0.0371
+     9        1.2776             nan     0.1000    0.0316
+    10        1.2564             nan     0.1000    0.0305
+    20        1.0909             nan     0.1000    0.0192
+    40        0.9131             nan     0.1000    0.0101
+    60        0.7990             nan     0.1000    0.0062
+    80        0.7202             nan     0.1000    0.0049
+   100        0.6530             nan     0.1000    0.0036
+   120        0.5996             nan     0.1000    0.0031
+   140        0.5532             nan     0.1000    0.0028
+   150        0.5322             nan     0.1000    0.0026
+
+- Fold2: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
++ Fold2: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1817
+     2        1.4893             nan     0.1000    0.1297
+     3        1.4051             nan     0.1000    0.1058
+     4        1.3380             nan     0.1000    0.0917
+     5        1.2789             nan     0.1000    0.0740
+     6        1.2316             nan     0.1000    0.0718
+     7        1.1856             nan     0.1000    0.0568
+     8        1.1494             nan     0.1000    0.0547
+     9        1.1147             nan     0.1000    0.0466
+    10        1.0851             nan     0.1000    0.0418
+    20        0.8602             nan     0.1000    0.0220
+    40        0.6346             nan     0.1000    0.0210
+    60        0.4897             nan     0.1000    0.0081
+    80        0.3963             nan     0.1000    0.0040
+   100        0.3289             nan     0.1000    0.0050
+   120        0.2805             nan     0.1000    0.0028
+   140        0.2371             nan     0.1000    0.0015
+   150        0.2203             nan     0.1000    0.0026
+
+- Fold2: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
++ Fold2: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2386
+     2        1.4585             nan     0.1000    0.1612
+     3        1.3557             nan     0.1000    0.1292
+     4        1.2726             nan     0.1000    0.1128
+     5        1.2024             nan     0.1000    0.0862
+     6        1.1475             nan     0.1000    0.0761
+     7        1.0983             nan     0.1000    0.0696
+     8        1.0536             nan     0.1000    0.0579
+     9        1.0155             nan     0.1000    0.0687
+    10        0.9736             nan     0.1000    0.0707
+    20        0.6980             nan     0.1000    0.0252
+    40        0.4574             nan     0.1000    0.0091
+    60        0.3308             nan     0.1000    0.0084
+    80        0.2512             nan     0.1000    0.0053
+   100        0.1906             nan     0.1000    0.0026
+   120        0.1531             nan     0.1000    0.0022
+   140        0.1221             nan     0.1000    0.0009
+   150        0.1100             nan     0.1000    0.0006
+
+- Fold2: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
++ Fold3: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1299
+     2        1.5240             nan     0.1000    0.0845
+     3        1.4654             nan     0.1000    0.0674
+     4        1.4217             nan     0.1000    0.0523
+     5        1.3872             nan     0.1000    0.0457
+     6        1.3572             nan     0.1000    0.0437
+     7        1.3283             nan     0.1000    0.0324
+     8        1.3053             nan     0.1000    0.0403
+     9        1.2800             nan     0.1000    0.0361
+    10        1.2545             nan     0.1000    0.0345
+    20        1.0948             nan     0.1000    0.0194
+    40        0.9104             nan     0.1000    0.0079
+    60        0.8016             nan     0.1000    0.0061
+    80        0.7173             nan     0.1000    0.0046
+   100        0.6531             nan     0.1000    0.0037
+   120        0.5999             nan     0.1000    0.0030
+   140        0.5506             nan     0.1000    0.0023
+   150        0.5307             nan     0.1000    0.0031
+
+- Fold3: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
++ Fold3: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1902
+     2        1.4867             nan     0.1000    0.1256
+     3        1.4049             nan     0.1000    0.1064
+     4        1.3369             nan     0.1000    0.0881
+     5        1.2807             nan     0.1000    0.0736
+     6        1.2334             nan     0.1000    0.0748
+     7        1.1870             nan     0.1000    0.0599
+     8        1.1491             nan     0.1000    0.0521
+     9        1.1155             nan     0.1000    0.0511
+    10        1.0828             nan     0.1000    0.0452
+    20        0.8516             nan     0.1000    0.0225
+    40        0.6281             nan     0.1000    0.0153
+    60        0.4950             nan     0.1000    0.0059
+    80        0.3975             nan     0.1000    0.0081
+   100        0.3262             nan     0.1000    0.0026
+   120        0.2764             nan     0.1000    0.0034
+   140        0.2345             nan     0.1000    0.0035
+   150        0.2168             nan     0.1000    0.0017
+
+- Fold3: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
++ Fold3: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2387
+     2        1.4570             nan     0.1000    0.1654
+     3        1.3529             nan     0.1000    0.1265
+     4        1.2729             nan     0.1000    0.1216
+     5        1.1987             nan     0.1000    0.0901
+     6        1.1423             nan     0.1000    0.0757
+     7        1.0946             nan     0.1000    0.0697
+     8        1.0507             nan     0.1000    0.0643
+     9        1.0102             nan     0.1000    0.0564
+    10        0.9745             nan     0.1000    0.0650
+    20        0.7020             nan     0.1000    0.0425
+    40        0.4520             nan     0.1000    0.0112
+    60        0.3270             nan     0.1000    0.0064
+    80        0.2538             nan     0.1000    0.0030
+   100        0.1978             nan     0.1000    0.0022
+   120        0.1599             nan     0.1000    0.0023
+   140        0.1301             nan     0.1000    0.0010
+   150        0.1200             nan     0.1000    0.0018
+
+- Fold3: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
++ Fold4: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1282
+     2        1.5233             nan     0.1000    0.0851
+     3        1.4655             nan     0.1000    0.0675
+     4        1.4207             nan     0.1000    0.0527
+     5        1.3848             nan     0.1000    0.0436
+     6        1.3560             nan     0.1000    0.0443
+     7        1.3278             nan     0.1000    0.0397
+     8        1.3032             nan     0.1000    0.0387
+     9        1.2765             nan     0.1000    0.0362
+    10        1.2527             nan     0.1000    0.0315
+    20        1.0928             nan     0.1000    0.0189
+    40        0.9114             nan     0.1000    0.0103
+    60        0.8016             nan     0.1000    0.0056
+    80        0.7197             nan     0.1000    0.0053
+   100        0.6550             nan     0.1000    0.0042
+   120        0.5984             nan     0.1000    0.0039
+   140        0.5507             nan     0.1000    0.0034
+   150        0.5290             nan     0.1000    0.0024
+
+- Fold4: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
++ Fold4: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1843
+     2        1.4866             nan     0.1000    0.1348
+     3        1.3985             nan     0.1000    0.1021
+     4        1.3314             nan     0.1000    0.0845
+     5        1.2776             nan     0.1000    0.0765
+     6        1.2288             nan     0.1000    0.0704
+     7        1.1837             nan     0.1000    0.0615
+     8        1.1447             nan     0.1000    0.0594
+     9        1.1071             nan     0.1000    0.0461
+    10        1.0773             nan     0.1000    0.0494
+    20        0.8531             nan     0.1000    0.0266
+    40        0.6218             nan     0.1000    0.0123
+    60        0.4893             nan     0.1000    0.0078
+    80        0.3972             nan     0.1000    0.0038
+   100        0.3280             nan     0.1000    0.0029
+   120        0.2803             nan     0.1000    0.0024
+   140        0.2386             nan     0.1000    0.0020
+   150        0.2219             nan     0.1000    0.0026
+
+- Fold4: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
++ Fold4: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2304
+     2        1.4609             nan     0.1000    0.1639
+     3        1.3562             nan     0.1000    0.1294
+     4        1.2734             nan     0.1000    0.1063
+     5        1.2056             nan     0.1000    0.0884
+     6        1.1497             nan     0.1000    0.0776
+     7        1.1007             nan     0.1000    0.0699
+     8        1.0561             nan     0.1000    0.0771
+     9        1.0087             nan     0.1000    0.0597
+    10        0.9703             nan     0.1000    0.0605
+    20        0.6957             nan     0.1000    0.0213
+    40        0.4465             nan     0.1000    0.0131
+    60        0.3262             nan     0.1000    0.0069
+    80        0.2496             nan     0.1000    0.0023
+   100        0.1979             nan     0.1000    0.0048
+   120        0.1575             nan     0.1000    0.0013
+   140        0.1261             nan     0.1000    0.0025
+   150        0.1148             nan     0.1000    0.0016
+
+- Fold4: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
++ Fold5: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1317
+     2        1.5233             nan     0.1000    0.0925
+     3        1.4629             nan     0.1000    0.0681
+     4        1.4182             nan     0.1000    0.0530
+     5        1.3825             nan     0.1000    0.0488
+     6        1.3507             nan     0.1000    0.0398
+     7        1.3247             nan     0.1000    0.0419
+     8        1.2984             nan     0.1000    0.0366
+     9        1.2722             nan     0.1000    0.0319
+    10        1.2512             nan     0.1000    0.0269
+    20        1.0902             nan     0.1000    0.0188
+    40        0.9093             nan     0.1000    0.0098
+    60        0.7978             nan     0.1000    0.0075
+    80        0.7150             nan     0.1000    0.0031
+   100        0.6521             nan     0.1000    0.0040
+   120        0.5956             nan     0.1000    0.0020
+   140        0.5483             nan     0.1000    0.0026
+   150        0.5286             nan     0.1000    0.0025
+
+- Fold5: shrinkage=0.1, interaction.depth=1, n.minobsinnode=10, n.trees=150 
++ Fold5: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.1898
+     2        1.4868             nan     0.1000    0.1288
+     3        1.4021             nan     0.1000    0.1087
+     4        1.3335             nan     0.1000    0.0865
+     5        1.2794             nan     0.1000    0.0740
+     6        1.2316             nan     0.1000    0.0757
+     7        1.1841             nan     0.1000    0.0561
+     8        1.1487             nan     0.1000    0.0557
+     9        1.1115             nan     0.1000    0.0443
+    10        1.0832             nan     0.1000    0.0410
+    20        0.8490             nan     0.1000    0.0278
+    40        0.6274             nan     0.1000    0.0092
+    60        0.4914             nan     0.1000    0.0095
+    80        0.4011             nan     0.1000    0.0062
+   100        0.3323             nan     0.1000    0.0045
+   120        0.2805             nan     0.1000    0.0026
+   140        0.2349             nan     0.1000    0.0026
+   150        0.2141             nan     0.1000    0.0016
+
+- Fold5: shrinkage=0.1, interaction.depth=2, n.minobsinnode=10, n.trees=150 
++ Fold5: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2414
+     2        1.4552             nan     0.1000    0.1643
+     3        1.3488             nan     0.1000    0.1320
+     4        1.2654             nan     0.1000    0.1130
+     5        1.1941             nan     0.1000    0.0906
+     6        1.1379             nan     0.1000    0.0723
+     7        1.0912             nan     0.1000    0.0690
+     8        1.0475             nan     0.1000    0.0743
+     9        1.0023             nan     0.1000    0.0705
+    10        0.9597             nan     0.1000    0.0427
+    20        0.6925             nan     0.1000    0.0285
+    40        0.4521             nan     0.1000    0.0113
+    60        0.3290             nan     0.1000    0.0063
+    80        0.2507             nan     0.1000    0.0042
+   100        0.1985             nan     0.1000    0.0039
+   120        0.1553             nan     0.1000    0.0023
+   140        0.1290             nan     0.1000    0.0018
+   150        0.1154             nan     0.1000    0.0023
+
+- Fold5: shrinkage=0.1, interaction.depth=3, n.minobsinnode=10, n.trees=150 
+Aggregating results
+Selecting tuning parameters
+Fitting n.trees = 150, interaction.depth = 3, shrinkage = 0.1, n.minobsinnode = 10 on full training set
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        1.6094             nan     0.1000    0.2285
+     2        1.4605             nan     0.1000    0.1643
+     3        1.3551             nan     0.1000    0.1221
+     4        1.2770             nan     0.1000    0.1153
+     5        1.2048             nan     0.1000    0.0919
+     6        1.1465             nan     0.1000    0.0801
+     7        1.0958             nan     0.1000    0.0762
+     8        1.0493             nan     0.1000    0.0712
+     9        1.0051             nan     0.1000    0.0693
+    10        0.9632             nan     0.1000    0.0607
+    20        0.7125             nan     0.1000    0.0292
+    40        0.4514             nan     0.1000    0.0159
+    60        0.3303             nan     0.1000    0.0093
+    80        0.2463             nan     0.1000    0.0065
+   100        0.1964             nan     0.1000    0.0025
+   120        0.1548             nan     0.1000    0.0034
+   140        0.1235             nan     0.1000    0.0021
+   150        0.1132             nan     0.1000    0.0017</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the trained model</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>model_gb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stochastic Gradient Boosting 
+
+13737 samples
+   54 predictor
+    5 classes: 'A', 'B', 'C', 'D', 'E' 
+
+No pre-processing
+Resampling: Cross-Validated (5 fold) 
+Summary of sample sizes: 10989, 10990, 10990, 10990, 10989 
+Resampling results across tuning parameters:
+
+  interaction.depth  n.trees  Accuracy   Kappa    
+  1                   50      0.7595554  0.6950666
+  1                  100      0.8314050  0.7865969
+  1                  150      0.8693318  0.8346576
+  2                   50      0.8791589  0.8469899
+  2                  100      0.9395067  0.9234529
+  2                  150      0.9628744  0.9530311
+  3                   50      0.9320095  0.9139427
+  3                  100      0.9704451  0.9626070
+  3                  150      0.9867513  0.9832410
+
+Tuning parameter 'shrinkage' was held constant at a value of 0.1
+
+Tuning parameter 'n.minobsinnode' was held constant at a value of 10
+Accuracy was used to select the optimal model using the largest value.
+The final values used for the model were n.trees = 150, interaction.depth =
+ 3, shrinkage = 0.1 and n.minobsinnode = 10.</code></pre>
+</div>
+</div>
+<p>Based on the summary, the optimal model was selected based on the highest accuracy, which was achieved with 150 trees and an interaction depth of 3. The shrinkage parameter was set to 0.1, and n.minobsinnode was held constant at a value of 10.</p>
+<p>This information helps us understand how different hyperparameters affect the model’s performance and guides us in selecting the best model configuration.</p>
+<p>Predict with the validation set and check the confusion matrix and accuracy:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict with the validation set</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>predictions_gb <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_gb, <span class="at">newdata =</span> testing_set)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the confusion matrix</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>conf_matrix_gb <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(predictions_gb, testing_set<span class="sc">$</span>classe)<span class="sc">$</span>table</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>conf_matrix_gb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Reference
+Prediction    A    B    C    D    E
+         A 1667    8    0    2    2
+         B    5 1117    7    5    0
+         C    0   13 1017    7    7
+         D    0    1    2  948   10
+         E    2    0    0    2 1063</code></pre>
+</div>
+</div>
+<ul>
+<li><p>For class A, there are 1667 correct predictions, 8 predictions of class B, 2 predictions of class D, and 2 predictions of class E.</p></li>
+<li><p>For class B, there are 1117 correct predictions, 5 predictions of class A, 7 predictions of class C, and 5 predictions of class D.</p></li>
+<li><p>For class C, there are 1017 correct predictions, 13 predictions of class B, 7 predictions of class D, and 7 predictions of class E.</p></li>
+<li><p>For class D, there are 948 correct predictions, 1 prediction of class B, 2 predictions of class C, and 10 predictions of class E.</p></li>
+<li><p>For class E, there are 1063 correct predictions, 2 predictions of class A, and 2 predictions of class D.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate accuracy</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>accuracy_gb <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">diag</span>(conf_matrix_gb)) <span class="sc">/</span> <span class="fu">sum</span>(conf_matrix_gb)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>accuracy_gb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9875956</code></pre>
+</div>
+</div>
+<p>The accuracy for the gradient boosting model is approximately 98.76%. This means that the model correctly predicts the exercise classes for about 98.76% of the validation set.</p>
+</section>
+</section>
+<section id="quiz-answers" class="level2">
+<h2 class="anchored" data-anchor-id="quiz-answers">Quiz answers</h2>
+<p><br>
+Given that the Random Forest model achieved an accuracy of 99.83% compared to 98.76% for GBM, I will use the Random Forest model for prediction:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions using the Random Forest model</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>predictions_rf <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_rf, <span class="at">newdata =</span> test_data)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View the predictions</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>predictions_rf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] B A B A A E D B A A B C B A E E A B B B
+Levels: A B C D E</code></pre>
+</div>
+</div>
+<p>The gbm model can also be used for prediction and the results can be compared to above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions using the GBM model</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>predictions_gbm <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_gb, <span class="at">newdata =</span> test_data)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># View the predictions</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>predictions_gbm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] B A B A A E D B A A B C B A E E A B B B
+Levels: A B C D E</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In conclusion, both the Random Forest and Gradient Boosting Machine models demonstrate comparable performance in terms of accuracy. This suggests that either model could be effectively utilized for making predictions in this context.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
