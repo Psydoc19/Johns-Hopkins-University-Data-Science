@@ -3,9 +3,8 @@ title: "Interactive Presentation with Plotly"
 author: "Vitalii Diakonov"
 date: "04/03/2024"
 output:
-  ioslides_presentation:
-    widescreen: yes
-    slide_level: 2
+  revealjs::revealjs_presentation:
+    incremental: true
 ---
 
 ## Instructions
