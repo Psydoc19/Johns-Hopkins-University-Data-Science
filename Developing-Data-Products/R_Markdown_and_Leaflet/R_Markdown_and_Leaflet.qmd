@@ -1,0 +1,61 @@
+---
+title: "Interactive Map with Leaflet"
+author: "Vitalii Diakonov"
+date: "04/03/2024"
+output: html_document
+---
+
+## Instructions
+
+Create a web page using R Markdown that features a map created with Leaflet. Host your webpage on either GitHub Pages, RPubs, or NeoCities.
+
+Your webpage must contain the date that you created the document, and it must contain a map created with Leaflet. We would love to see you show off your creativity!
+
+## Review criteria
+
+The rubric contains the following two questions:
+
+1.  Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+
+2.  Does the web page feature an interactive map that appears to have been created with Leaflet?
+
+## **Interactive Map of Top 10 Beaches in Florida**
+
+This map showcases the top 10 beaches in Florida, each marked with a custom icon. Hover over or click on a marker to read a brief description of each beach.
+
+```{r setup, include=FALSE}
+# Load necessary libraries
+library(leaflet)
+library(magrittr) # for the pipe operator
+```
+
+```{r map-creation, echo=FALSE}
+# Beaches data: names, coordinates, and descriptions
+beaches <- data.frame(
+  name = c("Clearwater Beach", "Siesta Key Beach", "South Beach", "Sanibel Island Beach", "Destin Beach", 
+           "Fort Lauderdale Beach", "Naples Beach", "Pensacola Beach", "Key West Beaches", "St. Pete Beach"),
+  lat = c(27.9778, 27.2670, 25.7617, 26.4483, 30.3935, 26.1224, 26.1420, 30.3328, 24.5551, 27.7253),
+  lng = c(-82.8276, -82.5463, -80.1918, -82.0225, -86.4958, -80.1043, -81.7948, -87.1498, -81.7800, -82.7412),
+  description = c("Popular for its white sands and clear waters.", "Famous for its quartz sand and vibrant sunsets.",
+                  "Iconic beach with lively nightlife.", "Tranquil island with unique seashells.",
+                  "Emerald waters and white sands.", "Beautiful urban beaches and luxury hotels.",
+                  "Upscale beach with fine dining and shopping.", "Home to the longest pier in the Gulf of Mexico.",
+                  "Laid-back atmosphere with historic sites.", "Award-winning beach with soft, sugary sands.")
+)
+
+# Define a custom icon for beach markers
+beachIcon <- icons(
+  iconUrl = "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png",
+  iconWidth = 25, iconHeight = 41,
+  iconAnchorX = 12, iconAnchorY = 41
+)
+
+# Create the Leaflet map
+leaflet(beaches) %>% 
+  addProviderTiles(providers$Esri.WorldImagery) %>% # Use Esri World Imagery for the base map
+  addMarkers(~lng, ~lat, popup = ~paste("<b>", name, "</b><br>", description), icon = beachIcon) %>% # Add custom icon markers with popups
+  addLayersControl(
+    baseGroups = c("Esri World Imagery"), # Add layer control to toggle base map
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
