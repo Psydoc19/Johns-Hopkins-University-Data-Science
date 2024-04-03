@@ -1,0 +1,88 @@
+---
+title: "Interactive Presentation with Plotly"
+author: "Vitalii Diakonov"
+date: "04/03/2024"
+output:
+  ioslides_presentation:
+    widescreen: yes
+    slide_level: 2
+---
+
+## Instructions
+
+Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities. Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity!
+
+## Review criteria
+
+The rubric contains the following two questions:
+
+1.  Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+
+2.  Is the web page a presentation and does it feature an interactive plot that appears to have been created with Plotly?
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# Load necessary libraries
+library(plotly)
+```
+
+## Plot 1: Sine Wave
+
+```{r}
+# Create sample data
+x <- seq(0, 2*pi, length.out = 100)
+y <- sin(x)
+
+# Create a plot with Plotly
+plot1 <- plot_ly(x = ~x, y = ~y, type = 'scatter', mode = 'lines')
+
+# Customize layout
+layout <- list(title = "Sine Wave", xaxis = list(title = "X-axis"), yaxis = list(title = "Y-axis"))
+
+# Display the plot
+plot1 <- plot1 %>% layout(layout)
+plot1
+
+```
+
+## Plot 2: Bar Chart
+
+```{r}
+# Create sample data
+data <- data.frame(
+  category = c("A", "B", "C", "D"),
+  value = c(10, 20, 15, 25)
+)
+
+# Create a bar chart with Plotly
+plot2 <- plot_ly(data, x = ~category, y = ~value, type = 'bar')
+
+# Customize layout
+layout <- list(title = "Bar Chart", xaxis = list(title = "Category"), yaxis = list(title = "Value"))
+
+# Display the plot
+plot2 <- plot2 %>% layout(layout)
+plot2
+```
+
+## Plot 3: Scatter plot
+
+```{r}
+# Create sample data
+x <- rnorm(100)
+y <- rnorm(100)
+
+# Create a scatter plot with Plotly
+plot3 <- plot_ly(x = ~x, y = ~y, type = 'scatter', mode = 'markers')
+
+# Customize layout
+layout <- list(title = "Scatter Plot", xaxis = list(title = "X-axis"), yaxis = list(title = "Y-axis"))
+
+# Display the plot
+plot3 <- plot3 %>% layout(layout)
+plot3
+```
+
+## Conclusion
+
+Thank you for viewing my interactive presentation featuring Plotly plots. I hope you enjoyed it!

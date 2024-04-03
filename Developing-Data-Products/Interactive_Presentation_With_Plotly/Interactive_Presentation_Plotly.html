@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vitalii Diakonov">
+<meta name="dcterms.date" content="2024-04-03">
+
+<title>Interactive Presentation with Plotly</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Interactive_Presentation_Plotly_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/quarto-html/quarto.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/quarto-html/popper.min.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Interactive_Presentation_Plotly_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Interactive_Presentation_Plotly_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Interactive_Presentation_Plotly_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Interactive_Presentation_Plotly_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Interactive_Presentation_Plotly_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Interactive_Presentation_Plotly_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="Interactive_Presentation_Plotly_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="Interactive_Presentation_Plotly_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="Interactive_Presentation_Plotly_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="Interactive_Presentation_Plotly_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="Interactive_Presentation_Plotly_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Interactive Presentation with Plotly</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vitalii Diakonov </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 3, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="instructions" class="level2">
+<h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
+<p>Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities. Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity!</p>
+</section>
+<section id="review-criteria" class="level2">
+<h2 class="anchored" data-anchor-id="review-criteria">Review criteria</h2>
+<p>The rubric contains the following two questions:</p>
+<ol type="1">
+<li><p>Does the web page feature a date and is this date less than two months before the date that you’re grading this assignment?</p></li>
+<li><p>Is the web page a presentation and does it feature an interactive plot that appears to have been created with Plotly?</p></li>
+</ol>
+</section>
+<section id="plot-1-sine-wave" class="level2">
+<h2 class="anchored" data-anchor-id="plot-1-sine-wave">Plot 1: Sine Wave</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-ba363bc2d71eb9c5e219" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-ba363bc2d71eb9c5e219">{"x":{"visdat":{"60487aa466c6":["function () ","plotlyVisDat"]},"cur_data":"60487aa466c6","attrs":{"60487aa466c6":{"x":{},"y":{},"mode":"lines","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x"},"yaxis":{"domain":[0,1],"automargin":true,"title":"y"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0.063466518254339258,0.12693303650867852,0.19039955476301779,0.25386607301735703,0.31733259127169627,0.38079910952603557,0.44426562778037482,0.50773214603471406,0.5711986642890533,0.63466518254339255,0.69813170079773179,0.76159821905207115,0.82506473730641039,0.88853125556074963,0.95199777381508888,1.0154642920694281,1.0789308103237674,1.1423973285781066,1.2058638468324459,1.2693303650867851,1.3327968833411243,1.3962634015954636,1.4597299198498028,1.5231964381041423,1.5866629563584815,1.6501294746128208,1.71359599286716,1.7770625111214993,1.8405290293758385,1.9039955476301778,1.967462065884517,2.0309285841388562,2.0943951023931957,2.1578616206475347,2.2213281389018742,2.2847946571562132,2.3482611754105527,2.4117276936648917,2.4751942119192312,2.5386607301735702,2.6021272484279097,2.6655937666822487,2.7290602849365881,2.7925268031909272,2.8559933214452666,2.9194598396996057,2.9829263579539451,3.0463928762082846,3.1098593944626236,3.1733259127169631,3.2367924309713021,3.3002589492256416,3.3637254674799806,3.42719198573432,3.4906585039886591,3.5541250222429985,3.6175915404973376,3.681058058751677,3.744524577006016,3.8079910952603555,3.8714576135146945,3.934924131769034,3.998390650023373,4.0618571682777125,4.1253236865320515,4.1887902047863914,4.2522567230407304,4.3157232412950695,4.3791897595494085,4.4426562778037484,4.5061227960580874,4.5695893143124264,4.6330558325667655,4.6965223508211054,4.7599888690754444,4.8234553873297834,4.8869219055841224,4.9503884238384623,5.0138549420928014,5.0773214603471404,5.1407879786014803,5.2042544968558193,5.2677210151101583,5.3311875333644974,5.3946540516188373,5.4581205698731763,5.5215870881275153,5.5850536063818543,5.6485201246361942,5.7119866428905333,5.7754531611448723,5.8389196793992113,5.9023861976535512,5.9658527159078902,6.0293192341622293,6.0927857524165692,6.1562522706709082,6.2197187889252472,6.2831853071795862],"y":[0,0.063423919656564506,0.12659245357374926,0.18925124436041021,0.25114798718107922,0.31203344569848707,0.37166245566032757,0.42979491208917164,0.48619673610046871,0.54064081745559756,0.5929079290546404,0.64278760968653925,0.69007901148211204,0.73459170865753332,0.77614646429175682,0.81457595205033573,0.84972542994951439,0.88145336344758207,0.90963199535451833,0.93414786026510666,0.95490224144407387,0.97181156832354165,0.98480775301220802,0.99383846446125412,0.99886733918300796,0.99987412767387507,0.99685477595194238,0.98982144188093268,0.97880244621477874,0.96384215855994204,0.94500081871466846,0.92235429410458136,0.89599377429133586,0.8660254037844386,0.8325698546347714,0.79576184053083199,0.75574957435425827,0.71269417137886282,0.66676900051629162,0.61815898622060517,0.56705986386277085,0.51367739157340631,0.45822652172741052,0.40093053540661361,0.34202014332566888,0.28173255684142967,0.22031053278654081,0.15800139597334989,0.095056043304182436,0.031727933498067656,-0.031727933498067858,-0.09505604330418263,-0.15800139597335008,-0.22031053278654056,-0.28173255684142984,-0.34202014332566866,-0.40093053540661377,-0.4582265217274103,-0.51367739157340642,-0.56705986386277063,-0.61815898622060528,-0.66676900051629151,-0.71269417137886293,-0.75574957435425816,-0.7957618405308321,-0.83256985463477129,-0.86602540378443882,-0.89599377429133598,-0.92235429410458136,-0.94500081871466834,-0.96384215855994215,-0.97880244621477874,-0.98982144188093268,-0.99685477595194227,-0.99987412767387507,-0.99886733918300796,-0.99383846446125412,-0.98480775301220813,-0.97181156832354165,-0.95490224144407387,-0.93414786026510677,-0.90963199535451822,-0.88145336344758196,-0.84972542994951439,-0.81457595205033584,-0.7761464642917566,-0.7345917086575332,-0.69007901148211204,-0.64278760968653958,-0.59290792905464018,-0.54064081745559756,-0.48619673610046882,-0.42979491208917192,-0.37166245566032724,-0.31203344569848707,-0.25114798718107939,-0.18925124436040974,-0.12659245357374904,-0.06342391965656452,-2.4492935982947064e-16],"mode":"lines","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="plot-2-bar-chart" class="level2">
+<h2 class="anchored" data-anchor-id="plot-2-bar-chart">Plot 2: Bar Chart</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-4d95c110ea5f815c9c77" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-4d95c110ea5f815c9c77">{"x":{"visdat":{"6048db36c94":["function () ","plotlyVisDat"]},"cur_data":"6048db36c94","attrs":{"6048db36c94":{"x":{},"y":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"category","type":"category","categoryorder":"array","categoryarray":["A","B","C","D"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"value"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["A","B","C","D"],"y":[10,20,15,25],"type":"bar","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="plot-3-scatter-plot" class="level2">
+<h2 class="anchored" data-anchor-id="plot-3-scatter-plot">Plot 3: Scatter plot</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-b79d320b81f8cec580ae" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-b79d320b81f8cec580ae">{"x":{"visdat":{"604812081b2f":["function () ","plotlyVisDat"]},"cur_data":"604812081b2f","attrs":{"604812081b2f":{"x":{},"y":{},"mode":"markers","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"xaxis":{"domain":[0,1],"automargin":true,"title":"x"},"yaxis":{"domain":[0,1],"automargin":true,"title":"y"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0.6795800313523066,-1.062856545685547,0.013217848007186507,-1.188909295099688,0.0073257725315550755,0.33294616845287806,-0.45111248351225403,-0.0075453372502760976,0.73138425626827086,-1.6181696553918894,0.87160685961546536,-0.29622417780566129,-0.051776706061050067,-1.127326051648966,0.20609037876112035,0.072959393792748975,-2.5377450405615343,-1.4493162230702119,0.29633240722674603,1.3233391704006321,-0.18956048125457864,-0.45295730581564325,0.41298601081538816,-0.45377893681113746,0.2544907945384261,-0.021828208135696567,-0.73091891171783274,-1.2246235718700271,-0.041741761639185186,1.1316614452025999,-0.47505064821960297,-0.39259566866450729,0.11295309473197955,0.92077678888375736,-1.8908906122846889,-0.66645304334548527,0.55979340894172169,1.0532335040273446,-2.710565286067995,-0.7082713790620746,1.8833258880166182,0.27391717271358307,-0.2160341543728182,1.5892084943870253,-0.036913862727320453,0.65000013944231172,-0.34263760148767952,1.3663053458014025,-3.2241420618423189,-0.88973804230419817,-1.5652401805410963,0.30257482852474599,-0.99553758277233206,0.75605932215116034,-1.0147720955544299,-1.9609360213649289,-1.1635419543454093,-0.76350196592600705,-0.71864381747817174,-0.9887802326694396,-0.90395539146471093,0.65661650363526003,-0.26845273169814654,-1.670705431997936,0.19089044520175502,-1.1199056147402602,0.88681163822939568,0.39086264215294048,-1.0111688729259118,-0.86555514498317221,0.52090953152666197,1.7095207084823778,0.21056278825539607,1.8931986627488029,1.3308945666059024,-0.56422944295834387,-0.0090086740076220431,1.3441312272713124,-0.040556418418221336,-0.21007015886634064,0.75269959040420142,-0.83795518704381955,0.86802822049727257,0.1667344621076875,-1.1224307015546291,1.2444591168684089,-1.1401768292214483,2.2670180765857415,0.60777416388572292,-1.6420267510489024,0.078505183001709333,0.38559287859746988,-1.2586103709717713,-1.0726812014599358,0.09539694562036323,-0.51207835393236878,0.86383696739448768,0.32060045936389414,0.1055081970318586,-0.15188455981654791],"y":[1.6180686374552007,0.67048117895480996,1.972961787332477,0.27330379759286461,-0.29762256507187013,-1.3525676287319548,0.76078525252534723,0.088272900673409191,1.5783241318105361,-1.3251584716236884,-1.1287692296258141,-1.5678126903210639,-0.078358228797932639,0.24741464976239153,0.36680180048725192,-1.4195059888574273,0.64492223602327481,0.84414113591857176,1.0721456261282736,-0.21890808269865583,-0.61666922224914389,-0.55288602642644136,-1.6243850255253212,-0.92841773252113269,-0.18670596089903782,-0.18274776041615345,-0.509561311307003,1.2430262597570119,-0.9842157568869444,-1.5063601345197515,-0.64956211407253306,0.73574742596339571,-0.49770319837893445,0.33844239459897119,-1.5188671777256739,-1.7470959586580652,-2.0363351435443633,-0.30252684009671665,1.660699728815815,0.74031826250576671,-1.980067819360009,0.29239397128916467,1.2710067217933034,-0.33622356893922944,0.10943496242902588,0.10673225361591873,1.0790710162306087,0.67536474379705169,0.63173775496305973,2.4859089397012384,0.35877504226314694,-1.025994528254264,-1.1561478145769166,-0.63406039320532681,0.65191348294376861,-0.55865641390876775,2.3923130050730155,0.37569550056567758,0.25564420946616678,1.4634263585657248,1.4156046596503713,-0.26404388830497638,-1.3952980026598965,-0.059546079724146141,0.3619027221463878,-0.78020141952653943,-0.71148635874962596,1.4381693115249616,-1.3499131714117694,0.59059416546672616,-0.22096573155613403,0.029024977071241215,0.02247656701898151,-1.8643889780918461,-1.8827302364046219,-0.39314942541558145,-0.49242085174460398,0.2011070711664773,-1.0705743824473772,-0.35156814745079784,-0.85814099965735735,1.2266266119002895,0.24906518982845741,-0.98754556008866601,-1.7873759119961907,0.65537143273061194,0.23781290847220771,0.33728638105467007,0.5339477187600995,-0.42851992543328249,0.64627541604496352,-0.91835811324360639,-0.2956294554257527,0.091255697714590897,1.0731290752848424,-0.29552649241004902,0.54217108226394073,1.9041653296262675,-0.93619586490691786,-2.1832972195018283],"mode":"markers","type":"scatter","marker":{"color":"rgba(31,119,180,1)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Thank you for viewing my interactive presentation featuring Plotly plots. I hope you enjoyed it!</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
