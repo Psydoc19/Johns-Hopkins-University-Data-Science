@@ -1,0 +1,61 @@
+---
+title: "Reproducible Pitch Presentation"
+author: "Vitalii Diakonov"
+date: "2024-04-04"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Gapminder Data Exploration
+
+-   **Presenter**: Vitalii Diakonov
+-   **Date**: 04/03/2024
+
+This presentation introduces a Shiny application designed to explore various global health and economic indicators provided by the Gapminder dataset.
+
+
+## Slide 2: The Gapminder Dataset
+
+-   **Global Data**: Life Expectancy, GDP per Capita, Population.
+-   **Insights**: Understand global trends over decades.
+-   **Application**: Visualize and analyze country-specific and global patterns.
+
+The Gapminder dataset provides a unique lens through which we can observe the development and health of nations over time.
+
+
+## Slide 3: Shiny Application Features
+
+-   **Interactive Exploration**: Users can select countries, continents, and time ranges to explore.
+-   **Dynamic Visualizations**: Life expectancy and GDP per capita over time.
+-   **User-Friendly Interface**: Designed for ease of use without sacrificing depth of analysis.
+
+The application aims to make data exploration accessible and informative.
+
+## Slide 4: Demonstrating the Application
+
+```{r example}
+# Example R code simulating part of the application's functionality
+library(ggplot2)
+library(gapminder)
+data(gapminder)
+
+ggplot(gapminder[gapminder$country %in% c("China", "United States") & gapminder$year > 1952 & gapminder$year < 2007,], aes(x = year, y = lifeExp, color = country)) +
+  geom_line() + geom_point() +
+  labs(title = "Life Expectancy Over Time", 
+       subtitle = "Data from Gapminder for selected years",
+       x = "Year", y = "Life Expectancy") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), legend.position = "bottom")
+```
+
+
+## Slide 5: Conclusion and Further Information
+
+-   **Goal**: Make data exploration engaging and accessible.
+-   **Learn More**: Visit [Gapminder](https://www.gapminder.org/data/) for more information on the dataset.
+-   **Try the App**: [Lifeapp](https://psydoc19.shinyapps.io/lifeapp/).
+
+Thank you for your attention! For questions or further information, feel free to reach out.

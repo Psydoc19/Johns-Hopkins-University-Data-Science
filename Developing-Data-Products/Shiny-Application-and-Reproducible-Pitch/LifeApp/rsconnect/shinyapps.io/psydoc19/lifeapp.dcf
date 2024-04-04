@@ -1,0 +1,10 @@
+name: lifeapp
+title:
+username: psydoc19
+account: psydoc19
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 11661714
+bundleId: 8452072
+url: https://psydoc19.shinyapps.io/lifeapp/
+version: 1
